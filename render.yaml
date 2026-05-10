@@ -1,0 +1,15 @@
+services:
+  - type: worker
+    name: nexus-manifest-bot
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: NEXUS_SECRET
+        sync: false
+      - key: BACKEND_URL
+        sync: false
