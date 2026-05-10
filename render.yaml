@@ -1,5 +1,5 @@
 services:
-  - type: worker
+  - type: web
     name: nexus-manifest-bot
     env: node
     buildCommand: npm install
@@ -12,4 +12,8 @@ services:
       - key: NEXUS_SECRET
         sync: false
       - key: BACKEND_URL
+        sync: false
+      - key: SELF_URL
+        sync: false
+      - key: PORT
         sync: false

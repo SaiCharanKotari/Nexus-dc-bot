@@ -12,6 +12,7 @@ const {
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 
 const client = new Client({
     intents: [
@@ -24,6 +25,25 @@ const BACKEND_URL = process.env.BACKEND_URL || 'https://smh-server.onrender.com/
 const NEXUS_SECRET = process.env.NEXUS_SECRET || 'nexuskey';
 const CLIENT_ID = process.env.CLIENT_ID;
 const TOKEN = process.env.DISCORD_TOKEN;
+const SELF_URL = process.env.SELF_URL || 'https://nexus-dc-bot-q3m1.onrender.com';
+const PORT = process.env.PORT || 10000;
+
+// Simple health-check server to prevent Render sleep
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot is alive!');
+}).listen(PORT, () => {
+    console.log(`Health-check server listening on port ${PORT}`);
+});
+
+// Keep-alive ping every 9 minutes
+setInterval(() => {
+    axios.get(SELF_URL).then(() => {
+        console.log(`[Keep-Alive] Pinged ${SELF_URL} successfully.`);
+    }).catch(err => {
+        console.error(`[Keep-Alive] Ping failed: ${err.message}`);
+    });
+}, 9 * 60 * 1000);
 
 // Define Slash Commands
 const commands = [
